@@ -35,6 +35,46 @@ Do NOT use for swap quotes -- use jupiter_get_swap_quote. Do NOT use for new tok
         },
         required: ["mint"],
       },
+      outputSchema: {
+          "type": "object",
+          "properties": {
+            "chain": {
+              "type": "string",
+              "description": "Chain (solana)"
+            },
+            "mint": {
+              "type": "string",
+              "description": "Token mint address"
+            },
+            "results": {
+              "type": "number",
+              "description": "Number of pools found"
+            },
+            "bestPool": {
+              "type": "string",
+              "description": "Best pool by liquidity"
+            },
+            "bestLiquidity": {
+              "type": "string",
+              "description": "Best pool liquidity formatted"
+            },
+            "pools": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "timestamp": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "chain",
+            "mint",
+            "results",
+            "pools"
+          ]
+        },
     },
   ],
 };
