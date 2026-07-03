@@ -165,9 +165,9 @@ async function fetchPoolsForToken(mint: string): Promise<PoolResult[]> {
 }
 
 export function registerRoutes(app: Hono) {
-  app.get("/api/pool", async (c) => {
+  async function handlePool(c: any, params: { mint?: string }) {
     await tryRequirePayment(0.003);
-    const mint = c.req.query("mint");
+    const mint = params.mint;
 
     if (!mint) {
       return c.json({ error: "Missing required parameter: mint (Solana token mint address)" }, 400);
@@ -199,5 +199,18 @@ export function registerRoutes(app: Hono) {
     } catch (err: any) {
       return c.json({ error: "Failed to fetch pool data", details: err.message }, 502);
     }
+  }
+
+  app.get("/api/pool", async (c) => {
+    return handlePool(c, { mint: c.req.query("mint") });
+  });
+
+  // POST mirror of the GET route above -- Bazaar (CDP) only reliably indexes
+  // POST payments with valid payloads (~82% conversion vs ~14% for GET-only
+  // resources, confirmed empirically). Same params, same logic, just body
+  // instead of query string.
+  app.post("/api/pool", async (c) => {
+    const body = await c.req.json().catch(() => ({}) as any);
+    return handlePool(c, { mint: body.mint });
   });
 }
