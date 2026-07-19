@@ -35,7 +35,8 @@ Any x402-aware client ([`@x402/fetch`](https://www.npmjs.com/package/@x402/fetch
 
 | Tool | Method | Path | Price | Description |
 |---|---|---|---|---|
-| `solana_scan_pool_liquidity` | GET | `/api/pool` | $0.003 | Get liquidity depth for Solana DEX pools by token mint |
+| `solana_scan_pool_liquidity` | GET | `/api/pool` | $0.008 | Get liquidity depth for Solana DEX pools by token mint |
+| `solana_scan_pool_liquidity` | POST | `/api/pool` | $0.008 | Get liquidity depth for Solana DEX pools by token mint (POST variant) |
 
 ### `solana_scan_pool_liquidity`
 
@@ -62,8 +63,34 @@ Example response:
 
 **When to use**: executing large swaps to estimate slippage. Essential for position sizing, liquidity analysis, and avoiding thin pools.
 
+### `solana_scan_pool_liquidity`
+
+Use this when you need to check liquidity depth of a Solana DEX pool before trading. Returns TVL, slippage estimates, volume, and fee tier for pools matching a token mint. POST variant of solana_scan_pool_liquidity -- same params passed as JSON body instead of query string.
+
+**Parameters**
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `mint` | string | yes | Solana token mint address to look up pools for (e.g. So11111111111111111111111111111111111111112 for SOL). |
+
+**Returns**
+
+- `pools` -- array of DEX pools for the given token
+- `depth` -- slippage estimates at 1%, 2%, 5% trade sizes in USD
+- `bestPool` -- the pool with deepest liquidity
+- `totalTvl` -- combined TVL across all pools for this token
+
+Example response:
+
+```json
+{"pools":[{"dex":"Raydium","pairName":"SOL/USDC","tvlUsd":45000000,"volume24h":12000000,"feeTier":0.25,"poolAge":"342d"}],"depth":{"1pct":500000,"2pct":950000,"5pct":2100000},"bestPool":"Raydium SOL/USDC","totalTvl":62000000}
+```
+
+**When to use**: executing large swaps to estimate slippage. Essential for position sizing, liquidity analysis, and avoiding thin pools.
+
 ## Example agent prompts
 
+- "Check liquidity depth of a Solana DEX pool before trading"
 - "Check liquidity depth of a Solana DEX pool before trading"
 
 ## Payment
