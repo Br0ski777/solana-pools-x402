@@ -9,7 +9,7 @@ export const API_CONFIG: ApiConfig = {
     {
       method: "GET",
       path: "/api/pool",
-      price: "$0.003",
+      price: "$0.008",
       description: "Get liquidity depth for Solana DEX pools by token mint",
       toolName: "solana_scan_pool_liquidity",
       toolDescription: `Use this when you need to check liquidity depth of a Solana DEX pool before trading. Returns TVL, slippage estimates, volume, and fee tier for pools matching a token mint.
@@ -79,7 +79,7 @@ Do NOT use for swap quotes -- use jupiter_get_swap_quote. Do NOT use for new tok
     {
       method: "POST",
       path: "/api/pool",
-      price: "$0.003",
+      price: "$0.008",
       description: "Get liquidity depth for Solana DEX pools by token mint (POST variant)",
       toolName: "solana_scan_pool_liquidity",
       toolDescription: `Use this when you need to check liquidity depth of a Solana DEX pool before trading. Returns TVL, slippage estimates, volume, and fee tier for pools matching a token mint. POST variant of solana_scan_pool_liquidity -- same params passed as JSON body instead of query string.
